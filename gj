@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+
+require 'erb'
+require 'json'
+require 'yaml'
+
+class Hash
+  def method_missing m
+    self[m.to_s]
+  end
+end
+class NilClass
+  def empty?
+    true
+  end
+end
+
+def empty?(val)
+		  val.nil? || val.empty?
+end
+
+class SchemaFile
+  def self.read(filename)
+    ext = File.extname(filename)[1..-1]
+	self.new.send(ext, filename)
+  end
+  def method_missing(m,filename)
+    raise "Incompatible file type for "+filename
+  end
+
+  def json(filename)
+    JSON.parse(File.read(filename))
+  end
+
+  def yaml(filename)
+	YAML.load(File.read(filename))
+  end
+end
+
+
+schema_file = ARGV[0]
+template_file = ARGV[1]
+
+v = SchemaFile.read(schema_file)
+erb = ERB.new(File.read(template_file), nil, '<>')
+
+erb.run(binding)

@@ -1,0 +1,24 @@
+<% v.tables.each do |table| %>
+<% primary = "" %>
+<% unique = [] %>
+-- -----------------------------------------------------
+-- <%= table.name %>
+-- -----------------------------------------------------
+
+CREATE TABLE `<%= table.name %>` (
+<% table.columns.each do |c| %>
+    <%= c.name %>  <%= c.type %>  <%= "COMMENT '"+c.comment+"'" if not empty? c.comment %>,
+<%      primary = c.name if c["primary-key"] %>
+<%      unique << c.name if c["unique"] %>
+<% end %>
+
+    <%= "PRIMARY KEY("+primary+")" if not primary.empty? %>
+<% unique.each do |u| %>
+    UNIQUE KEY(<%= u %>)
+<% end %>	
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8
+COMMENT = '<%= table.desc %>';
+<% end %>
+
