@@ -1,20 +1,21 @@
 <% v.tables.each do |table| %>
 <% primary = "" %>
 <% unique = [] %>
+<% comma = ListSeparater.new(table.columns.size) %>
 -- -----------------------------------------------------
 -- <%= table.name %>
 -- -----------------------------------------------------
 
 CREATE TABLE `<%= table.name %>` (
 <% table.columns.each do |c| %>
-    <%= c.name %>  <%= c.type %>  <%= "COMMENT '"+c.comment+"'" if not empty? c.comment %>,
-<%      primary = c.name if c["primary-key"] %>
-<%      unique << c.name if c["unique"] %>
+    <%= c.name %>  <%= c.type %>  <%= "COMMENT '"+c.comment+"'" if not empty? c.comment %><%= comma.put %>
+<%      if c["primary-key"] then primary = c.name; comma.add_line(1); end %>
+<%      if c["unique"] then unique << c.name; comma.add_line(1); end %>
 <% end %>
 
-    <%= "PRIMARY KEY("+primary+")" if not primary.empty? %>
+    <%= "PRIMARY KEY("+primary+")"+comma.put if not primary.empty? %>
 <% unique.each do |u| %>
-    UNIQUE KEY(<%= u %>)
+    UNIQUE KEY(<%= u %>)<%= comma.put %>
 <% end %>	
 )
 ENGINE=InnoDB

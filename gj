@@ -4,6 +4,21 @@ require 'erb'
 require 'json'
 require 'yaml'
 
+class ListSeparater
+  def initialize(n, sep=',')
+    @rest = n
+  end
+
+  def put
+    @rest -= 1
+    ',' if @rest > 0
+  end
+
+  def add_line(n)
+    @rest += n
+  end
+end
+
 class String
   def to_upper_camelcase(sep=/[^[:alnum:]]+/)
     split(sep).map(&:capitalize).join
