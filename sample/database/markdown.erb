@@ -1,0 +1,19 @@
+<% v.tables.each do |table| %>
+<%= table.name+"\n" %>
+================================================
+
+## DESCRIPTION
+
+<%= table.desc+"\n" %>
+
+## COLUMNS
+
+|column name|type|comment|primary|unique|
+|:----------|:---|:------|:-----:|:----:|
+<% table.columns.each do |c| %>
+|<%= c.name %>|<%= c.type %>|<%= c.comment %>|<%= 'x' if c["primary-key"] %>|<%= 'x' if c["unique"] %>|
+<% end %>
+
+
+
+<% end %>

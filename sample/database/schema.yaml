@@ -12,6 +12,7 @@ tables:
       - name:     id
         type:     integer
         primary-key:  true
+        comment: unique ID for this table.
       - name:     user
         type:     varchar(32)
         not-null: true
