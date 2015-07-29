@@ -4,6 +4,15 @@ require 'erb'
 require 'json'
 require 'yaml'
 
+class String
+  def to_upper_camelcase(sep=/[^[:alnum:]]+/)
+    split(sep).map(&:capitalize).join
+  end
+
+  def to_lower_camelcase(sep=/[^[:alnum:]]+/)
+    to_upper_camelcase(sep).sub(/./){ $&.downcase }
+  end
+end
 class Hash
   def method_missing m
     self[m.to_s]
