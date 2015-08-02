@@ -62,10 +62,9 @@ class SchemaFile
 end
 
 
-schema_file = ARGV[0]
-template_file = ARGV[1]
-
-v = SchemaFile.read(schema_file)
+template_file = ARGV.shift
 erb = ERB.new(File.read(template_file), nil, '<>')
-
-erb.run(binding)
+ARGV.each do |schema_file|
+  v = SchemaFile.read(schema_file)
+  erb.run(binding)
+end
