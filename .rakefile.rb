@@ -1,6 +1,6 @@
 namespace :gj do
-  desc 'deploy'
+  desc 'install the Gj'
   task :deploy do
-    FileUtils.cp('Projects/gj/gj', 'bin/')
+    FileUtils.install('Projects/gj/gj', 'bin/')
   end
 end
